@@ -8,6 +8,7 @@ const MoviesDetails = () => {
   const { moviesId } = useParams();
   const [movie, setMovie] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   useEffect(() => {
     const fetch = async moviesId => {
       try {
@@ -16,6 +17,8 @@ const MoviesDetails = () => {
         setMovie(response);
         setIsLoading(false);
       } catch (error) {
+        setError(true);
+        setIsLoading(false);
         throw new Error(error);
       }
     };
@@ -31,9 +34,9 @@ const MoviesDetails = () => {
   return (
     <main>
       <BackLink to={backLinkHref}>Back to movies</BackLink>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+      {error && <div>Please, try again</div>}
+      {isLoading && <div>Loading...</div>}
+      {!isLoading && !error && (
         <>
           <Container>
             <div>
@@ -47,16 +50,11 @@ const MoviesDetails = () => {
               <b>Overview:</b>
               <p>{overview}</p>
               <b>Genres:</b>
-
-              {genres !== null ? (
-                <ul>
-                  {genres?.map(({ name }) => {
-                    return <li key={name}>{name}</li>;
-                  })}
-                </ul>
-              ) : (
-                <p>No information</p>
-              )}
+              <p>
+                {genres !== null
+                  ? genres?.map(({ name }) => name).join(', ')
+                  : 'No information'}
+              </p>
             </div>
           </Container>
           <p>Additional information</p>
