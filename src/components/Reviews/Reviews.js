@@ -7,7 +7,7 @@ const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(false);
   useEffect(() => {
-    const fetch = async moviesId => {
+    const fetch = async () => {
       try {
         const response = await API.getMovieByReviews(moviesId);
         setReviews(response);
@@ -16,7 +16,7 @@ const Reviews = () => {
         throw new Error(error);
       }
     };
-    fetch(moviesId);
+    fetch();
   }, [moviesId]);
 
   return (

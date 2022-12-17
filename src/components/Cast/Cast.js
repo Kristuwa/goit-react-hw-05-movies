@@ -1,3 +1,4 @@
+import { Notification } from 'components/Notification/Notification';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as API from '../../services/api';
@@ -7,7 +8,7 @@ const Cast = () => {
   const [actors, setActors] = useState([]);
   const [error, setError] = useState(false);
   useEffect(() => {
-    const fetch = async moviesId => {
+    const fetch = async () => {
       try {
         const response = await API.getMovieByActors(moviesId);
         setActors(response);
@@ -16,18 +17,18 @@ const Cast = () => {
         throw new Error(error);
       }
     };
-    fetch(moviesId);
+    fetch();
   }, [moviesId]);
 
   return (
     <>
       {actors.length > 0 && (
         <ul>
-          {actors.map(({ name, profile_path, character }) => (
+          {actors.map(({ name, profile_path: profilePath, character }) => (
             <li key={name}>
               <p>{name}</p>
               <img
-                src={`https://image.tmdb.org/t/p/w500/${profile_path}`}
+                src={`https://image.tmdb.org/t/p/w500/${profilePath}`}
                 alt={name}
                 width="70"
                 height="100"
@@ -37,7 +38,10 @@ const Cast = () => {
           ))}
         </ul>
       )}
-      {error && <div>Please reload page</div>}
+      {actors.length === 0 && (
+        <p>We don't have any information for this movie</p>
+      )}
+      {error && <Notification message="Please reload page" />}
     </>
   );
 };

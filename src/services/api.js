@@ -14,8 +14,9 @@ export const getMovieById = async id => {
   const { data } = await axios.get(
     `/movie/${id}?api_key=${API_KEY}&language=en-US`
   );
-  const { title, overview, poster_path, vote_average, genres } = data;
-  return { title, overview, poster_path, vote_average, genres };
+  const { title, overview, poster_path, vote_average, genres, release_date } =
+    data;
+  return { title, overview, poster_path, vote_average, genres, release_date };
 };
 
 export const getMovieByActors = async id => {
@@ -34,4 +35,13 @@ export const getMovieByReviews = async id => {
     `/movie/${id}/reviews?api_key=${API_KEY}&language=en-US&page=1`
   );
   return data.results.map(({ author, content }) => ({ author, content }));
+};
+
+export const getMovieBySearchWord = async searchWord => {
+  const {
+    data: { results },
+  } = await axios.get(
+    `/search/movie?api_key=${API_KEY}&language=en-US&query=${searchWord}&page=1&include_adult=false`
+  );
+  return results.map(({ title, id }) => ({ title, id }));
 };

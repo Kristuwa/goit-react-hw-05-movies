@@ -14,5 +14,6 @@ export const GalleryListItem = ({ id, title }) => {
 };
 
 GalleryListItem.propTypes = {
+  id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
 };

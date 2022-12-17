@@ -1,3 +1,4 @@
+import { Notification } from 'components/Notification/Notification';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Container, Header, Link } from './SharedLayout.styled';
@@ -13,7 +14,7 @@ export const SharedLayout = () => {
           <Link to="/movies">Movies</Link>
         </nav>
       </Header>
-      <Suspense fallback={<div>Loading subpage...</div>}>
+      <Suspense fallback={<Notification message="Loading subpage..." />}>
         <Outlet />
       </Suspense>
     </Container>
