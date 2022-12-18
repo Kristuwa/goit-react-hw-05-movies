@@ -33,10 +33,19 @@ const MoviesDetails = () => {
 
   return (
     <main>
-      <BackLink to={backLinkHref}>Back to movies</BackLink>
-      {error && <Notification message="Please, try again" />}
+      {error && (
+        <>
+          <BackLink to={backLinkHref}>Back to movies</BackLink>
+          <Notification message="Please, try again" />
+        </>
+      )}
       {isLoading && <Loader />}
-      {!isLoading && !error && movie && <MovieCard movie={movie} />}
+      {!isLoading && !error && movie && (
+        <>
+          <BackLink to={backLinkHref}>Back to movies</BackLink>
+          <MovieCard movie={movie} />
+        </>
+      )}
       <Suspense fallback={<Notification message="Loading subpage..." />}>
         <Outlet />
       </Suspense>

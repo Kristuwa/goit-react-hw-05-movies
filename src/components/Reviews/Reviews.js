@@ -1,3 +1,4 @@
+import { Loader } from 'components/Loader/Loader';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as API from '../../services/api';
@@ -5,14 +6,19 @@ import * as API from '../../services/api';
 const Reviews = () => {
   const { moviesId } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [error, setError] = useState(false);
   useEffect(() => {
     const fetch = async () => {
       try {
+        setIsLoading(true);
         const response = await API.getMovieByReviews(moviesId);
         setReviews(response);
+        setIsLoading(false);
       } catch (error) {
         setError(true);
+        setIsLoading(false);
         throw new Error(error);
       }
     };
@@ -21,6 +27,7 @@ const Reviews = () => {
 
   return (
     <>
+      {isLoading && <Loader />}
       {reviews.length > 0 && (
         <ul>
           {reviews.map(({ author, content }) => (
@@ -34,7 +41,9 @@ const Reviews = () => {
           ))}
         </ul>
       )}
-      {reviews.length === 0 && <p>We don't have any reviews for this movie</p>}
+      {!isLoading && reviews.length === 0 && (
+        <p>We don't have any reviews for this movie</p>
+      )}
       {error && <div>Please reload page</div>}
     </>
   );
