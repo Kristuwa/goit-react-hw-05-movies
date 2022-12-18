@@ -1,15 +1,15 @@
 import { BackLink } from 'components/BackLink/BackLink';
 import { Loader } from 'components/Loader/Loader';
+import { MovieCard } from 'components/MovieCard/MovieCard';
 import { Notification } from 'components/Notification/Notification';
 import { useEffect, useState, Suspense } from 'react';
 import { useLocation, useParams, Link, Outlet } from 'react-router-dom';
 import * as API from '../services/api';
-import { Container, ImageContainer } from './MoviesDetails.styled';
 
 const MoviesDetails = () => {
   const location = useLocation();
   const { moviesId } = useParams();
-  const [movie, setMovie] = useState({});
+  const [movie, setMovie] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -30,18 +30,6 @@ const MoviesDetails = () => {
   }, [moviesId]);
 
   const backLinkHref = location.state?.from ?? '/';
-  const { title, overview, poster_path, vote_average, genres, release_date } =
-    movie;
-  const releaseDate = release_date?.slice(0, 4);
-  const posterPath =
-    poster_path !== null
-      ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-      : 'https://www.bworldonline.com/wp-content/uploads/2022/04/cinema02_14-01.jpg';
-  const voteAverage = vote_average?.toFixed(0) * 10;
-  const genresList =
-    genres?.length > 0
-      ? genres.map(({ name }) => name).join(', ')
-      : 'No information';
 
   return (
     <main>
@@ -50,30 +38,18 @@ const MoviesDetails = () => {
       {isLoading && <Loader />}
       {!isLoading && !error && movie && (
         <>
-          <Container>
-            <ImageContainer>
-              <img src={posterPath} alt={title} width="500" height="700" />
-            </ImageContainer>
-            <div>
-              <h2>
-                {title} ({releaseDate})
-              </h2>
-              <p>
-                User Score: <span>{voteAverage}%</span>{' '}
-              </p>
-              <b>Overview:</b>
-              <p>{overview}</p>
-              <b>Genres:</b>
-              <p>{genresList}</p>
-            </div>
-          </Container>
+          <MovieCard movie={movie} />
           <p>Additional information</p>
           <ul>
             <li>
-              <Link to="cast">Cast</Link>
+              <Link to="cast" state={{ from: location }}>
+                Cast
+              </Link>
             </li>
             <li>
-              <Link to="reviews">Reviews</Link>
+              <Link to="reviews" state={{ from: location }}>
+                Reviews
+              </Link>
             </li>
           </ul>
         </>
