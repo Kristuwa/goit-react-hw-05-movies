@@ -43,6 +43,5 @@ export const getMovieBySearchWord = async searchWord => {
   } = await axios.get(
     `/search/movie?api_key=${API_KEY}&language=en-US&query=${searchWord}&page=1&include_adult=false`
   );
-  console.log(results.map(({ title, id }) => ({ title, id })));
   return results.map(({ title, id }) => ({ title, id }));
 };
