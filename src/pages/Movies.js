@@ -11,6 +11,7 @@ const Movies = () => {
   const [gallery, setGallery] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState('start');
   const searchWord = searchParams.get('query') ?? '';
 
   useEffect(() => {
@@ -20,13 +21,16 @@ const Movies = () => {
 
     const fetch = async () => {
       try {
+        setStatus('loading');
         setIsLoading(true);
         const galleryList = await API.getMovieBySearchWord(searchWord);
         setGallery(galleryList);
         setIsLoading(false);
+        setStatus('end');
       } catch (error) {
         setError(true);
         setIsLoading(false);
+        setStatus('end');
         throw new Error(error);
       }
     };
@@ -44,10 +48,13 @@ const Movies = () => {
       <Searchbar onSubmit={onSubmit} />
       {isLoading && <Loader />}
       {gallery.length > 0 && <Gallery gallery={gallery} />}
-      {error && <Notification message="Please, enter another word" />}
-      {gallery.length === 0 && (
-        <Notification message="Please, enter key word" />
+      {error && (
+        <Notification message="No results!!!Please, enter another word" />
       )}
+      {status === 'end' && gallery.length === 0 && (
+        <Notification message="No results!!!Please, enter another word" />
+      )}
+      {status === 'start' && <Notification message="Please, enter key word" />}
     </main>
   );
 };
