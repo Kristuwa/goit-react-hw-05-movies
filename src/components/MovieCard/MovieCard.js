@@ -16,6 +16,7 @@ export const MovieCard = ({ movie }) => {
     genres.length > 0
       ? genres.map(({ name }) => name).join(', ')
       : 'No information';
+  const backLinkHref = location.state?.from ?? '/';
 
   return (
     <>
@@ -39,12 +40,12 @@ export const MovieCard = ({ movie }) => {
       <p>Additional information</p>
       <ul>
         <li>
-          <Link to="cast" state={{ from: location }}>
+          <Link to="cast" state={{ from: backLinkHref }}>
             Cast
           </Link>
         </li>
         <li>
-          <Link to="reviews" state={{ from: location }}>
+          <Link to="reviews" state={{ from: backLinkHref }}>
             Reviews
           </Link>
         </li>
