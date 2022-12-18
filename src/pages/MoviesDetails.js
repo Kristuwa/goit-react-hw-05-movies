@@ -3,7 +3,7 @@ import { Loader } from 'components/Loader/Loader';
 import { MovieCard } from 'components/MovieCard/MovieCard';
 import { Notification } from 'components/Notification/Notification';
 import { useEffect, useState, Suspense } from 'react';
-import { useLocation, useParams, Link, Outlet } from 'react-router-dom';
+import { useLocation, useParams, Outlet } from 'react-router-dom';
 import * as API from '../services/api';
 
 const MoviesDetails = () => {
@@ -36,25 +36,7 @@ const MoviesDetails = () => {
       <BackLink to={backLinkHref}>Back to movies</BackLink>
       {error && <Notification message="Please, try again" />}
       {isLoading && <Loader />}
-      {!isLoading && !error && movie && (
-        <>
-          <MovieCard movie={movie} />
-          <p>Additional information</p>
-          <ul>
-            <li>
-              <Link to="cast" state={{ from: location }}>
-                Cast
-              </Link>
-            </li>
-            <li>
-              <Link to="reviews" state={{ from: location }}>
-                Reviews
-              </Link>
-            </li>
-          </ul>
-        </>
-      )}
-
+      {!isLoading && !error && movie && <MovieCard movie={movie} />}
       <Suspense fallback={<Notification message="Loading subpage..." />}>
         <Outlet />
       </Suspense>

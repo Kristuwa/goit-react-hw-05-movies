@@ -1,7 +1,9 @@
 import { Container, ImageContainer } from './MoviesCard.styled';
 import PropTypes from 'prop-types';
+import { Link, useLocation } from 'react-router-dom';
 
 export const MovieCard = ({ movie }) => {
+  const location = useLocation();
   const { title, overview, poster_path, vote_average, genres, release_date } =
     movie;
   const releaseDate = release_date.slice(0, 4);
@@ -16,23 +18,38 @@ export const MovieCard = ({ movie }) => {
       : 'No information';
 
   return (
-    <Container>
-      <ImageContainer>
-        <img src={posterPath} alt={title} width="500" height="700" />
-      </ImageContainer>
-      <div>
-        <h2>
-          {title} ({releaseDate})
-        </h2>
-        <p>
-          User Score: <span>{voteAverage}%</span>{' '}
-        </p>
-        <b>Overview:</b>
-        <p>{overview}</p>
-        <b>Genres:</b>
-        <p>{genresList}</p>
-      </div>
-    </Container>
+    <>
+      <Container>
+        <ImageContainer>
+          <img src={posterPath} alt={title} width="500" height="700" />
+        </ImageContainer>
+        <div>
+          <h2>
+            {title} ({releaseDate})
+          </h2>
+          <p>
+            User Score: <span>{voteAverage}%</span>{' '}
+          </p>
+          <b>Overview:</b>
+          <p>{overview}</p>
+          <b>Genres:</b>
+          <p>{genresList}</p>
+        </div>
+      </Container>
+      <p>Additional information</p>
+      <ul>
+        <li>
+          <Link to="cast" state={{ from: location }}>
+            Cast
+          </Link>
+        </li>
+        <li>
+          <Link to="reviews" state={{ from: location }}>
+            Reviews
+          </Link>
+        </li>
+      </ul>
+    </>
   );
 };
 
